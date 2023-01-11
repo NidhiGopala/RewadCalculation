@@ -11,12 +11,10 @@ function calculateResults(incomingData) {
     let points = 0;
     let over100 = transaction.amt - 100;
 
-    if (over100 > 0) {
-      // A customer receives 2 points for every dollar spent over $100 in each transaction      
-      points += (over100 * 2);
+    if (over100 > 0) {      
+      points += over100;
     }
     if (transaction.amt > 50) {
-      // plus 1 point for every dollar spent over $50 in each transaction
       points += transaction.amt - 50;
     }
     const month = new Date(transaction.transactionDt).getMonth();
@@ -33,9 +31,7 @@ function calculateResults(incomingData) {
     if (!totalPointsByCustomer[custid]) {
       totalPointsByCustomer[custid] = { points: 0, name: name };
     }
-    console.log(points);
     totalPointsByCustomer[custid].points += points;
-    console.log(totalPointsByCustomer[custid]);
     if (byCustomer[custid][month]) {
       byCustomer[custid][month].points += points;
       byCustomer[custid][month].monthNumber = month;
@@ -58,7 +54,6 @@ function calculateResults(incomingData) {
       tot.push(cRow);
     });
   }
-  console.log("total : " + Object.values(totalPointsByCustomer), Object.keys(totalPointsByCustomer));
   let totByCustomer = [];
   for (custKey in totalPointsByCustomer) {
     totByCustomer.push({
